@@ -15,15 +15,15 @@ namespace Application.Features.User.Commands.LoginUser
             LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await unitOfWork.UserRepository
-                .GetUserByIdAsync(request.userId);
+                .GetUserByIdAsync(request.UserId);
 
             if (user == null)
             {
-                throw new UserNotFound(request.userId);
+                throw new UserNotFound(request.UserId);
             }
 
             var verificationResult = passwordHasher.VerifyHashedPassword(
-                user, user.Password, request.password);
+                user, user.Password, request.Password);
 
             if (verificationResult == PasswordVerificationResult.Failed)
             {
