@@ -1,9 +1,13 @@
-﻿using Application.Features.DTOs.User;
+﻿using Application.Auth;
+using Application.Features.DTOs.User;
 using Application.Features.Exceptions;
 using Application.Features.User.Commands.LoginUser;
 using Application.Features.User.Commands.RegistrateUser;
+using Application.Features.User.Queries.GetUserById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -59,6 +63,32 @@ namespace API.Controllers
                 return NotFound(exception.Message);
             }
             catch(UsersPasswordIsInvalid exception)
+            {
+                return Unauthorized(exception.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserDto>> GetUserById(
+            Guid userId, CancellationToken cancellationToken)
+        {
+            var currentUserId = User.GetUserId();
+
+            var query = new GetUserByIdQuery(userId, currentUserId);
+
+            try
+            {
+                var userDto = await _sender.Send(
+                    query, cancellationToken);
+
+                return Ok(userDto);
+            }
+            catch (UserNotFound exception)
+            {
+                return NotFound(exception.Message);
+            }
+            catch (UserHasNotPermission exception)
             {
                 return Unauthorized(exception.Message);
             }

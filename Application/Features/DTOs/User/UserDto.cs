@@ -11,5 +11,17 @@
         public string Email { get; set; } = null!;
 
         public string Role { get; set; } = null!;
+
+        public static UserDto MapFromUser(Domain.User.User user)
+        {
+            return new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role.ToString(),
+            };
+        }
     }
 }

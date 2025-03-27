@@ -1,4 +1,5 @@
-﻿using Application.UnitOfWork.Repositories;
+﻿using Application.Features.Exceptions;
+using Application.UnitOfWork.Repositories;
 using Domain.User;
 using Microsoft.EntityFrameworkCore;
 

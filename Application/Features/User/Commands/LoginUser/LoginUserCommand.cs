@@ -2,6 +2,6 @@
 
 namespace Application.Features.User.Commands.LoginUser
 {
-    public record LoginUserCommand(Guid userId, string password)
+    public record LoginUserCommand(Guid UserId, string Password)
         : IRequest<string>;
 }
