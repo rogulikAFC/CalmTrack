@@ -4,6 +4,7 @@ using Application.Features.Exceptions;
 using Application.Features.User.Commands.LoginUser;
 using Application.Features.User.Commands.RegistrateUser;
 using Application.Features.User.Queries.GetUserById;
+using Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

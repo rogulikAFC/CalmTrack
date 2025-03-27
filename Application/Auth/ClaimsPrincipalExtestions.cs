@@ -11,6 +11,8 @@ namespace Application.Auth
                 .FindFirst(ClaimTypes.NameIdentifier)?
                 .Value;
 
+            Console.WriteLine(stringUserId);
+
             return Guid.TryParse(
                 stringUserId,
                 out Guid parsedUserId) ?
