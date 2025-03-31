@@ -3,6 +3,7 @@ using Application.Features.Exceptions;
 using Application.Features.User.Commands.DeleteUser;
 using Application.Features.User.Commands.LoginUser;
 using Application.Features.User.Commands.RegistrateUser;
+using Application.Features.User.Commands.UpdateUser;
 using Application.Features.User.Queries.GetUserById;
 using Infrastructure.Auth;
 using MediatR;
@@ -107,6 +108,32 @@ namespace API.Controllers
             }
 
             var command = new DeleteUserCommand(userId);
+
+            try
+            {
+                await _sender.Send(command, cancellationToken);
+
+                return NoContent();
+            }
+            catch (UserNotFound exception)
+            {
+                return NotFound(exception.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPut("{userId}")]
+        public async Task<ActionResult> UpdateUser(
+            Guid userId, UserForUpdateDto userForUpdateDto, CancellationToken cancellationToken)
+        {
+            var currentUserId = User.GetUserId();
+
+            if (currentUserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var command = new UpdateUserCommand(userId, userForUpdateDto);
 
             try
             {
