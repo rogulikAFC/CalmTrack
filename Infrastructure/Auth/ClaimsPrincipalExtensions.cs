@@ -6,11 +6,11 @@ namespace Infrastructure.Auth
     {
         public static Guid GetUserId(this ClaimsPrincipal principal)
         {
-            var stringId = principal.FindFirstValue("sub");
+            var stringId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (stringId == null)
             {
-                throw new Exception("sub claim not found.");
+                throw new Exception("Name identifier claim not found.");
             }
 
             return Guid.Parse(stringId);

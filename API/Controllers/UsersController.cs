@@ -1,5 +1,6 @@
 ﻿using Application.Features.DTOs.User;
 using Application.Features.Exceptions;
+using Application.Features.User.Commands.DeleteUser;
 using Application.Features.User.Commands.LoginUser;
 using Application.Features.User.Commands.RegistrateUser;
 using Application.Features.User.Queries.GetUserById;
@@ -90,6 +91,32 @@ namespace API.Controllers
             catch (UserHasNotPermission exception)
             {
                 return Unauthorized(exception.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUser(
+            Guid userId, CancellationToken cancellationToken)
+        {
+            var currentUserId = User.GetUserId();
+
+            if (currentUserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var command = new DeleteUserCommand(userId);
+
+            try
+            {
+                await _sender.Send(command, cancellationToken);
+
+                return NoContent();
+            }
+            catch (UserNotFound exception)
+            {
+                return NotFound(exception.Message);
             }
         }
     }
