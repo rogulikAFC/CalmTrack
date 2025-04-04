@@ -1,4 +1,5 @@
-﻿using Application.Features.DTOs.User;
+﻿using Application.Auth;
+using Application.Features.DTOs.User;
 using Application.Features.Exceptions;
 using Application.Features.User.Commands.DeleteUser;
 using Application.Features.User.Commands.LoginUser;
@@ -9,6 +10,7 @@ using Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
