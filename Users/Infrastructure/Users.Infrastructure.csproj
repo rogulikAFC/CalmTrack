@@ -22,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
+    <Folder Include="Persistence\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\Migrations\" />
+    <ProjectReference Include="..\Application\Users.Application.csproj" />
   </ItemGroup>
 
 </Project>

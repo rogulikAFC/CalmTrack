@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddMediatR(config =>
-    config.RegisterServicesFromAssembly(Assembly.Load("Application")));
+    config.RegisterServicesFromAssembly(Assembly.Load("Users.Application")));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
