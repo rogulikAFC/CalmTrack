@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Users.gRPC";
+
+package users;
+
+service Users {
+	rpc LoginUser(LoginRequest) returns (LoginResponse);
+	rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse);
+}
+
+message LoginRequest {
+	string user_id = 1;
+	string password = 2;
+}
+
+message LoginResponse {
+	string token = 1;
+}
+
+message GetUserByIdRequest {
+	string user_id = 1;
+}
+
+message GetUserByIdResponse {
+	string id = 1;
+	string first_name = 2;
+	string last_name = 3;
+	string email = 4;
+	string role = 5;
+}
