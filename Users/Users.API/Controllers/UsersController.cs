@@ -39,7 +39,7 @@ namespace API.Controllers
             catch (RoleNotFoundByName exception)
             {
                 return NotFound(exception.Message);
-            } 
+            }
             catch (UserNotFound exception)
             {
                 return NotFound(exception.Message);
@@ -63,7 +63,7 @@ namespace API.Controllers
             {
                 return NotFound(exception.Message);
             }
-            catch(UsersPasswordIsInvalid exception)
+            catch (UsersPasswordIsInvalid exception)
             {
                 return Unauthorized(exception.Message);
             }
@@ -145,6 +145,12 @@ namespace API.Controllers
             {
                 return NotFound(exception.Message);
             }
+        }
+
+        [HttpGet]
+        public ActionResult<string> Get()
+        {
+            return "GETTED";
         }
     }
 }

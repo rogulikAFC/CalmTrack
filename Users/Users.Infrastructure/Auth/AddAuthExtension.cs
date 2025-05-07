@@ -22,7 +22,7 @@ namespace Users.Infrastructure.Auth
                         ValidIssuer = config["JwtSettings:Issuer"],
                         ValidAudience = config["JwtSettings:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(config["JwtSettings:Secret"]!)),
+                            Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")!)),
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,

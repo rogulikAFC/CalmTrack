@@ -78,5 +78,13 @@ namespace Users.gRPC.Services
                     new Status(StatusCode.NotFound, exception.Message));
             }
         }
+
+        public override async Task<TestGrpcResponse> TestGrpc(TestGrpcRequest request, ServerCallContext context)
+        {
+            return await Task.FromResult(new TestGrpcResponse
+            {
+                Id = request.Id,
+            });
+        }
     }
 }

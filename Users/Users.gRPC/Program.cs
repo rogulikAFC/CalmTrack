@@ -6,7 +6,7 @@ using Users.Infrastructure.Auth;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddPersistence();
 
 builder.Services.AddAuth(builder.Configuration);
 
@@ -21,7 +21,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
 app.MapGrpcService<UsersService>();
 
 app.Run();
