@@ -8,11 +8,14 @@ namespace Surveys.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Scale> scale)
         {
-            scale.HasKey(scale => new
-            {
-                scale.SurveyId,
-                scale.Value,
-            });
+            scale.HasKey(scale => scale.Id);
+
+            scale.HasIndex(scale => new
+                {
+                    scale.SurveyId,
+                    scale.Value,
+                })
+                .IsUnique();
 
             scale.Property(scale => scale.From)
                 .IsRequired();
@@ -22,6 +25,10 @@ namespace Surveys.Infrastructure.Persistence.Configurations
 
             scale.Property(scale => scale.Value)
                 .IsRequired();
+
+            scale.HasMany(scale => scale.FormInstances)
+                .WithOne(formInstance => formInstance.Result)
+                .HasForeignKey(formInstance => formInstance.ResultId);
         }
     }
 }

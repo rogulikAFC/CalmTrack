@@ -6,6 +6,6 @@ namespace Surveys.Domain.User
     {
         public Guid Id { get; set; }
 
-        public List<FormInstance> InstancesOfCompletedSurvays { get; set; } = [];
+        public List<FormInstance> InstancesOfCompletedSurveys { get; set; } = [];
     }
 }

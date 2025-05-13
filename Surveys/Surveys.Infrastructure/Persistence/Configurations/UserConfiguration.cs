@@ -10,7 +10,7 @@ namespace Surveys.Infrastructure.Persistence.Configurations
         {
             user.HasKey(user => user.Id);
 
-            user.HasMany(user => user.InstancesOfCompletedSurvays)
+            user.HasMany(user => user.InstancesOfCompletedSurveys)
                 .WithOne(formInstance => formInstance.User)
                 .HasForeignKey(formInstance => formInstance.UserId);
         }

@@ -25,6 +25,10 @@ namespace Surveys.Infrastructure.Persistence.Configurations
             survey.HasMany(survey => survey.Scales)
                 .WithOne(scale => scale.Survey)
                 .HasForeignKey(scale => scale.SurveyId);
+
+            survey.Property(survey => survey.IsArchived)
+                .IsRequired()
+                .HasDefaultValue(false);
         }
     }
 }

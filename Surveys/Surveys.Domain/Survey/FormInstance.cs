@@ -12,7 +12,10 @@
 
         public List<UserAnswer> UserAnswers { get; set; } = [];
 
-        public int Points => 
-            UserAnswers.Select(a => a.Answer.Value).Count();
+        public int Points { get; set; }
+
+        public Guid? ResultId { get; set; }
+
+        public Scale? Result { get; set; }
     }
 }

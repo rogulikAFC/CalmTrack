@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Surveys.Application.UnitOfWork;
 
 namespace Surveys.Infrastructure.Persistence
 {
@@ -10,6 +11,8 @@ namespace Surveys.Infrastructure.Persistence
         {
             services.AddNpgsql<SurveysDbContext>(
                 configuration.GetConnectionString("SurveysDb"));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             return services;
         }

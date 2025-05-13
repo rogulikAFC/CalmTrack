@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Surveys.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Surveys.Infrastructure.Persistence;
 namespace Surveys.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(SurveysDbContext))]
-    partial class SurveysDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250512045623_FormInstanceResultStoringAddedAndSurveysArchivingAdded")]
+    partial class FormInstanceResultStoringAddedAndSurveysArchivingAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +49,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                     b.HasIndex("AnswerText", "QuestionId")
                         .IsUnique();
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("Surveys.Domain.Survey.FormInstance", b =>
@@ -73,7 +76,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FormInstances", (string)null);
+                    b.ToTable("FormInstances");
                 });
 
             modelBuilder.Entity("Surveys.Domain.Survey.Question", b =>
@@ -97,7 +100,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                     b.HasIndex("SurveyId", "SerialNumber")
                         .IsUnique();
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Surveys.Domain.Survey.Scale", b =>
@@ -124,7 +127,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                     b.HasIndex("SurveyId", "Value")
                         .IsUnique();
 
-                    b.ToTable("Scales", (string)null);
+                    b.ToTable("Scales");
                 });
 
             modelBuilder.Entity("Surveys.Domain.Survey.Survey", b =>
@@ -150,7 +153,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Surveys", (string)null);
+                    b.ToTable("Surveys");
                 });
 
             modelBuilder.Entity("Surveys.Domain.Survey.UserAnswer", b =>
@@ -170,7 +173,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAnswers", (string)null);
+                    b.ToTable("UserAnswers");
                 });
 
             modelBuilder.Entity("Surveys.Domain.User.User", b =>
@@ -181,7 +184,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Surveys.Domain.Survey.Answer", b =>

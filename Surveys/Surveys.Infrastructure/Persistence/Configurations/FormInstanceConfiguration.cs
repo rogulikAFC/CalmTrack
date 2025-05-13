@@ -12,7 +12,7 @@ namespace Surveys.Infrastructure.Persistence.Configurations
             formInstance.HasKey(formInstance => formInstance.Id);
 
             formInstance.HasOne(formInstance => formInstance.User)
-                .WithMany(user => user.InstancesOfCompletedSurvays)
+                .WithMany(user => user.InstancesOfCompletedSurveys)
                 .HasForeignKey(formInstance => formInstance.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -22,6 +22,14 @@ namespace Surveys.Infrastructure.Persistence.Configurations
             formInstance.HasMany(formInstance => formInstance.UserAnswers)
                 .WithOne(userAnswer => userAnswer.FormInstance)
                 .HasForeignKey(userAnswer => userAnswer.FormInstanceId);
+
+            formInstance.Property(formInstance => formInstance.Points)
+                .IsRequired();
+
+            formInstance.HasOne(formInstance => formInstance.Result)
+                .WithMany(scale => scale.FormInstances)
+                .HasForeignKey(formInstance => formInstance.ResultId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
