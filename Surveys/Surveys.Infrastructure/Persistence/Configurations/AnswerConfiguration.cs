@@ -8,7 +8,7 @@ namespace Surveys.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Answer> answer)
         {
-            answer.HasKey(answer => answer.AnswerId);
+            answer.HasKey(answer => answer.Id);
 
             answer.HasOne(answer => answer.Question)
                 .WithMany(question => question.Answers)

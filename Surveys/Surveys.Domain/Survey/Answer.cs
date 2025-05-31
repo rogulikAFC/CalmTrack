@@ -3,7 +3,7 @@
     public class Answer
     {
         // Answer text and question combination must be unique
-        public Guid AnswerId { get; set; }
+        public Guid Id { get; set; }
 
         public Guid QuestionId { get; set; }
 
