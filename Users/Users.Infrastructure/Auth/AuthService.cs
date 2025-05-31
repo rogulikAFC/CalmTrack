@@ -21,7 +21,8 @@ namespace Infrastructure.Auth
         {
             var handler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_config["JwtSettings:Secret"]!);
+            var key = Encoding.ASCII.GetBytes(
+                Environment.GetEnvironmentVariable("JWT_SECRET")!);
 
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
