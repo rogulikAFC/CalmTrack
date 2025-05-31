@@ -7,10 +7,17 @@ namespace Surveys.Infrastructure.Persistence
     public static class AddPersistenceExtension
     {
         public static IServiceCollection AddPersistence(
-            this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services)
         {
-            services.AddNpgsql<SurveysDbContext>(
-                configuration.GetConnectionString("SurveysDb"));
+            var postgresUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
+            var postgresDb = Environment.GetEnvironmentVariable("POSTGRES_SURVEYS_DB");
+            var postgresPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+
+            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = surveys_db; Port = 5433;";
+
+            services.AddDbContext<SurveysDbContext>();
+
+            services.AddNpgsql<SurveysDbContext>(connectionString);
 
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 

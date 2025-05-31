@@ -1,0 +1,90 @@
+services:
+  # Users
+  users_db:
+    image: postgres:latest
+    container_name: users_db
+    ports:
+     - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_USERS_DB}
+    volumes:
+      - ./.containers/users_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  users.api:
+    build:
+      context: Users
+      dockerfile: Users.API/Dockerfile
+    ports:
+      - 7061:7061
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USERS_DB: ${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_AUDIENCE: ${JWT_AUDIENCE}
+    depends_on:
+      users_db:
+        condition: service_healthy
+
+  users.grpc:
+    build:
+      context: Users
+      dockerfile: Users.gRPC/Dockerfile
+    ports:
+      - 5062:5062
+      - 7062:7062
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USERS_DB: ${POSTGRES_USERS_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_AUDIENCE: ${JWT_AUDIENCE}
+    depends_on:
+      users_db:
+        condition: service_healthy
+
+  # Surveys
+  surveys_db:
+    image: postgres:latest
+    container_name: surveys_db
+    ports:
+     - 5433:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_SURVEYS_DB}
+    volumes:
+      - ./.containers/surveys_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  surveys.rest:
+    build:
+      context: Surveys
+      dockerfile: Surveys.REST/Dockerfile
+    ports:
+      - 8060:8080
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_SURVEYS_DB: ${POSTGRES_SURVEYS_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_AUDIENCE: ${JWT_AUDIENCE}
+    depends_on:
+      surveys_db:
+        condition: service_healthy
+

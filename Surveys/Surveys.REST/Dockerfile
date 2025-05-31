@@ -4,29 +4,30 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 7061:7061
+EXPOSE 8061
+EXPOSE 8061
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Users.API/Users.API.csproj", "Users.API/"]
-COPY ["Users.Application/Users.Application.csproj", "Users.Application/"]
-COPY ["Users.Domain/Users.Domain.csproj", "Users.Domain/"]
-COPY ["Users.Infrastructure/Users.Infrastructure.csproj", "Users.Infrastructure/"]
-RUN dotnet restore "./Users.API/Users.API.csproj"
+COPY ["Surveys.REST/Surveys.REST.csproj", "Surveys.REST/"]
+COPY ["Surveys.Application/Surveys.Application.csproj", "Surveys.Application/"]
+COPY ["Surveys.Domain/Surveys.Domain.csproj", "Surveys.Domain/"]
+COPY ["Surveys.Infrastructure/Surveys.Infrastructure.csproj", "Surveys.Infrastructure/"]
+RUN dotnet restore "./Surveys.REST/Surveys.REST.csproj"
 COPY . .
-WORKDIR "/src/Users.API"
-RUN dotnet build "./Users.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Surveys.REST"
+RUN dotnet build "./Surveys.REST.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Users.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Surveys.REST.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Users.API.dll"]
+ENTRYPOINT ["dotnet", "Surveys.REST.dll"]

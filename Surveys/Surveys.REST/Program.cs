@@ -6,13 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddPersistence();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+app.ApplyMigrations();
 
 app.UseAuthorization();
 

@@ -1,7 +1,5 @@
 ﻿using Application.UnitOfWork;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Persistence
 {
@@ -10,13 +8,11 @@ namespace Infrastructure.Persistence
         public static IServiceCollection AddPersistence(
             this IServiceCollection services)
         {
-            DotNetEnv.Env.Load("../../Users.API/.env");
-
             var postgresUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
-            var postgresDb = Environment.GetEnvironmentVariable("POSTGRES_DB");
+            var postgresDb = Environment.GetEnvironmentVariable("POSTGRES_USERS_DB");
             var postgresPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
 
-            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = db; Port = 5432;";
+            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = users_db; Port = 5432;";
 
             services.AddDbContext<CalmTrackDbContext>();
 
