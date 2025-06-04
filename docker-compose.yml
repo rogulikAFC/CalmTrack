@@ -3,16 +3,18 @@ services:
   users_db:
     image: postgres:latest
     container_name: users_db
+    command: postgres -p 5001
     ports:
-     - 5432:5432
+     - 5001:5001
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_USERS_DB}
+      POSTGRES_PORT: 5001
     volumes:
       - ./.containers/users_db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -p 5432"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -p 5001"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -22,7 +24,7 @@ services:
       context: Users
       dockerfile: Users.API/Dockerfile
     ports:
-      - 7061:7061
+      - 8001:8080
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -33,14 +35,17 @@ services:
     depends_on:
       users_db:
         condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: Users
 
   users.grpc:
     build:
       context: Users
       dockerfile: Users.gRPC/Dockerfile
     ports:
-      - 5062:5062
-      - 7062:7062
+      - 8002:8080
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -51,23 +56,27 @@ services:
     depends_on:
       users_db:
         condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: Users   
 
   # Surveys
   surveys_db:
     image: postgres:latest
     container_name: surveys_db
-    command: postgres -p 5433
+    command: postgres -p 5002
     ports:
-     - 5433:5433
+     - 5002:5002
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_SURVEYS_DB}
-      POSTGRES_PORT: 5433
+      POSTGRES_PORT: 5002
     volumes:
       - ./.containers/surveys_db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -p 5433"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -p 5002"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -78,7 +87,7 @@ services:
       context: Surveys
       dockerfile: Surveys.REST/Dockerfile
     ports:
-      - 8060:8080
+      - 8003:8080
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence
             var postgresDb = Environment.GetEnvironmentVariable("POSTGRES_USERS_DB");
             var postgresPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
 
-            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = users_db; Port = 5432;";
+            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = users_db; Port = 5001;";
 
             services.AddDbContext<CalmTrackDbContext>();
 

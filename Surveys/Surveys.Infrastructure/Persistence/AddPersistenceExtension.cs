@@ -14,7 +14,7 @@ namespace Surveys.Infrastructure.Persistence
             var postgresDb = Environment.GetEnvironmentVariable("POSTGRES_SURVEYS_DB");
             var postgresPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
 
-            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = surveys_db; Port = 5433;";
+            var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = surveys_db; Port = 5002;";
 
             //services.AddDbContext<SurveysDbContext>();
 
