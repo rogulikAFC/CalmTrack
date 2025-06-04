@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Surveys.Infrastructure.Persistence.Migrations
+namespace Surveys.Infrastructure.persistence.migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class DbCreated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,8 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    Description = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false)
+                    Description = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    IsArchived = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -59,18 +60,39 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                 name: "Scales",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: false),
                     From = table.Column<int>(type: "integer", nullable: false),
-                    To = table.Column<int>(type: "integer", nullable: false)
+                    To = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Scales", x => new { x.SurveyId, x.Value });
+                    table.PrimaryKey("PK_Scales", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Scales_Surveys_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Answers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AnswerText = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    Value = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Answers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Answers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -81,35 +103,23 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateOnly = table.Column<DateOnly>(type: "date", nullable: false)
+                    DateOnly = table.Column<DateOnly>(type: "date", nullable: false),
+                    Points = table.Column<int>(type: "integer", nullable: false),
+                    ResultId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FormInstances", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_FormInstances_Scales_ResultId",
+                        column: x => x.ResultId,
+                        principalTable: "Scales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
                         name: "FK_FormInstances_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Answers",
-                columns: table => new
-                {
-                    AnswerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AnswerText = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    Value = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Answers", x => x.AnswerId);
-                    table.ForeignKey(
-                        name: "FK_Answers_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -129,7 +139,7 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                         name: "FK_UserAnswers_Answers_AnswerId",
                         column: x => x.AnswerId,
                         principalTable: "Answers",
-                        principalColumn: "AnswerId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserAnswers_FormInstances_FormInstanceId",
@@ -157,6 +167,11 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FormInstances_ResultId",
+                table: "FormInstances",
+                column: "ResultId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FormInstances_UserId",
                 table: "FormInstances",
                 column: "UserId");
@@ -165,6 +180,12 @@ namespace Surveys.Infrastructure.Persistence.Migrations
                 name: "IX_Questions_SurveyId_SerialNumber",
                 table: "Questions",
                 columns: new[] { "SurveyId", "SerialNumber" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Scales_SurveyId_Value",
+                table: "Scales",
+                columns: new[] { "SurveyId", "Value" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -182,9 +203,6 @@ namespace Surveys.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Scales");
-
-            migrationBuilder.DropTable(
                 name: "UserAnswers");
 
             migrationBuilder.DropTable(
@@ -195,6 +213,9 @@ namespace Surveys.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "Scales");
 
             migrationBuilder.DropTable(
                 name: "Users");

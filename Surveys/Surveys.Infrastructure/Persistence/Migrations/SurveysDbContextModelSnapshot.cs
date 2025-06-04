@@ -8,7 +8,7 @@ using Surveys.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Surveys.Infrastructure.Persistence.Migrations
+namespace Surveys.Infrastructure.persistence.migrations
 {
     [DbContext(typeof(SurveysDbContext))]
     partial class SurveysDbContextModelSnapshot : ModelSnapshot

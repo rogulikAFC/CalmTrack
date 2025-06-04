@@ -1,6 +1,6 @@
 ﻿using Surveys.Domain.Survey;
 
-namespace Surveys.Application.DTOs.Surveys
+namespace Surveys.Application.Features.DTOs.Surveys
 {
     public class FormInstanceForCreateDto
     {
@@ -18,7 +18,7 @@ namespace Surveys.Application.DTOs.Surveys
                 DateOnly = DateOnly
             };
 
-            formInstance.UserAnswers = (List<UserAnswer>) AnswerIds.Select(answerId =>
+            formInstance.UserAnswers = (List<UserAnswer>)AnswerIds.Select(answerId =>
                 new UserAnswer
                 {
                     AnswerId = answerId,
@@ -27,6 +27,6 @@ namespace Surveys.Application.DTOs.Surveys
                 });
 
             return formInstance;
-        } 
+        }
     }
 }

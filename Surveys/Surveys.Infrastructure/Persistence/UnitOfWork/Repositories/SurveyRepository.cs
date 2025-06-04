@@ -2,6 +2,7 @@
 using Surveys.Application.UnitOfWork.Exceptions;
 using Surveys.Application.UnitOfWork.Repositories;
 using Surveys.Domain.Survey;
+using Surveys.Domain.Survey.Extensions;
 
 namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
 {
@@ -76,5 +77,22 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
                 .Where(formInstance => formInstance.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<List<Survey>> ListSurveys(
+            int pageSize, int pageNum, string? query, bool isArhieved)
+        {
+            return await _context.Surveys
+                .FilterSurveys(query, isArhieved)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public void RemoveSurvey(Survey survey)
+        {
+            _context.Surveys.Remove(survey);
+        }
+
+        // TODO: Divide survey and form instance repositories
     }
 }

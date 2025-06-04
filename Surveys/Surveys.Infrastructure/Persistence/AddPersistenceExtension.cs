@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Surveys.Application.UnitOfWork;
 
@@ -15,9 +16,12 @@ namespace Surveys.Infrastructure.Persistence
 
             var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = surveys_db; Port = 5433;";
 
-            services.AddDbContext<SurveysDbContext>();
+            //services.AddDbContext<SurveysDbContext>();
 
-            services.AddNpgsql<SurveysDbContext>(connectionString);
+            //services.AddNpgsql<SurveysDbContext>(connectionString);
+
+            services.AddDbContext<SurveysDbContext>(options =>
+                options.UseNpgsql(connectionString));
 
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 

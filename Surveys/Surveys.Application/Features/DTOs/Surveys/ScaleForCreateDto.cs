@@ -1,7 +1,7 @@
 ﻿using Surveys.Domain.Survey;
 using System.ComponentModel.DataAnnotations;
 
-namespace Surveys.Application.DTOs.Surveys
+namespace Surveys.Application.Features.DTOs.Surveys
 {
     public class ScaleForCreateDto
     {

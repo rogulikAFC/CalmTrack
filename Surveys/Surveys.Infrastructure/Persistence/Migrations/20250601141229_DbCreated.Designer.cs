@@ -9,11 +9,11 @@ using Surveys.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Surveys.Infrastructure.Persistence.Migrations
+namespace Surveys.Infrastructure.persistence.migrations
 {
     [DbContext(typeof(SurveysDbContext))]
-    [Migration("20250516042331_AnswerIdRenamedToId")]
-    partial class AnswerIdRenamedToId
+    [Migration("20250601141229_DbCreated")]
+    partial class DbCreated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

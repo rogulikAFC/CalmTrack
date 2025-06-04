@@ -1,6 +1,6 @@
 ﻿using Surveys.Domain.Survey;
 
-namespace Surveys.Application.DTOs.Surveys
+namespace Surveys.Application.Features.DTOs.Surveys
 {
     public class AnswerDto
     {

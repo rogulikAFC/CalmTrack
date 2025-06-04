@@ -1,4 +1,4 @@
-﻿namespace Surveys.Application.DTOs.User
+﻿namespace Surveys.Application.Features.DTOs.User
 {
     public class UserDto
     {

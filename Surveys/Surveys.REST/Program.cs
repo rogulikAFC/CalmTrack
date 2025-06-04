@@ -1,4 +1,5 @@
 using Surveys.Infrastructure.Persistence;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddPersistence();
+
+builder.Services.AddMediatR(config =>
+    config.RegisterServicesFromAssembly(Assembly.Load("Surveys.Application")));
 
 var app = builder.Build();
 
