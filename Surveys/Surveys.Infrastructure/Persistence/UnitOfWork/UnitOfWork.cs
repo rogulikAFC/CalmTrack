@@ -19,6 +19,9 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork
         public IUserRepository UserRepository
             => new UserRepository(_context);
 
+        public IFormInstanceRepository FormInstanceRepository
+            => new FormInstanceRepository(_context);
+
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             await _context.SaveChangesAsync(cancellationToken);

@@ -94,7 +94,5 @@ namespace Surveys.REST.Controllers
                 return NotFound(ex.Message);
             }
         }
-
-        // TODO: Write form intances contoller
     }
 }

@@ -16,10 +16,6 @@ namespace Surveys.Infrastructure.Persistence
 
             var connectionString = $"Database = {postgresDb}; Username = {postgresUser}; Password = {postgresPassword}; Host = surveys_db; Port = 5002;";
 
-            //services.AddDbContext<SurveysDbContext>();
-
-            //services.AddNpgsql<SurveysDbContext>(connectionString);
-
             services.AddDbContext<SurveysDbContext>(options =>
                 options.UseNpgsql(connectionString));
 

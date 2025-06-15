@@ -15,21 +15,6 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
             _context = context;
         }
 
-        // Defining result
-        public async Task AddFormInstance(FormInstance formInstance)
-        {
-            formInstance.Points = formInstance.UserAnswers
-                .Select(userAnswer => userAnswer.Answer.Value)
-                .Sum();
-
-            formInstance.Result = await _context.Scales
-                .FirstOrDefaultAsync(scale =>
-                    scale.From >= formInstance.Points
-                    && scale.To < formInstance.Points);
-
-            _context.Add(formInstance);
-        }
-
         public void AddSurvey(Survey survey)
         {
             var scales = survey.Scales.ToList();
@@ -51,16 +36,6 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
             _context.Add(survey);
         }
 
-        public async Task<FormInstance?> GetFormInstanceByIdAsync(Guid id)
-        {
-            return await _context.FormInstances
-                
-                .Include(formInstance => formInstance.UserAnswers)
-                .ThenInclude(userAnswer => userAnswer.Answer)
-
-                .FirstOrDefaultAsync(formInstance => formInstance.Id == id);
-        }
-
         public async Task<Survey?> GetSurveyByIdAsync(Guid id)
         {
             return await _context.Surveys
@@ -69,13 +44,6 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
                 .ThenInclude(question => question.Answers)
 
                 .FirstOrDefaultAsync(survey => survey.Id == id);
-        }
-
-        public async Task<List<FormInstance>> ListFormInstancesOfUser(Guid userId)
-        {
-            return await _context.FormInstances
-                .Where(formInstance => formInstance.UserId == userId)
-                .ToListAsync();
         }
 
         public async Task<List<Survey>> ListSurveys(
@@ -92,7 +60,5 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
         {
             _context.Surveys.Remove(survey);
         }
-
-        // TODO: Divide survey and form instance repositories
     }
 }

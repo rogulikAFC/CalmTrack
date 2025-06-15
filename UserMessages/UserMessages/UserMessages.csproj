@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>User messages for the Kafka</Title>
+    <Authors>CalmTrack</Authors>
+    <Company>CalmTrack</Company>
+  </PropertyGroup>
+
+</Project>
