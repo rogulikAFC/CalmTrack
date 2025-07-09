@@ -4,12 +4,13 @@ using Application.Features.Exceptions;
 using Application.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Users.Application.Kafka;
 
 namespace Application.Features.User.Commands.RegistrateUser
 {
     public class RegistrateUserCommandHandler(
         IUnitOfWork unitOfWork, IPasswordHasher<Domain.User.User> passwordHasher,
-        IAuthService auth)
+        IAuthService auth, IUsersProducer usersProducer)
         : IRequestHandler<RegistrateUserCommand, CreatedUserDto>
     {
         public async Task<CreatedUserDto> Handle(
@@ -35,6 +36,8 @@ namespace Application.Features.User.Commands.RegistrateUser
             user.Password = hashedPassword;
 
             unitOfWork.UserRepository.AddUser(user);
+
+            await usersProducer.ProduceCreateUserMessage(user);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -2,6 +2,7 @@ using Infrastructure.Persistence;
 using System.Reflection;
 using Users.gRPC.Services;
 using Users.Infrastructure.Auth;
+using Users.Infrastructure.Kafka.UsersProducer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistence();
 
 builder.Services.AddAuth(builder.Configuration);
+
+builder.Services.AddUsersProducer();
 
 builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(Assembly.Load("Users.Application")));

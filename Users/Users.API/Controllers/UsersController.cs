@@ -9,6 +9,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Users.Application.Features.User.Queries.LoginUser;
+using Users.Application.Kafka;
+using Users.Application.Kafka.Exceptions;
 
 namespace API.Controllers
 {
@@ -18,7 +20,7 @@ namespace API.Controllers
     {
         private readonly ISender _sender;
 
-        public UsersController(ISender sender)
+        public UsersController(ISender sender, IUsersProducer usersProducer)
         {
             _sender = sender;
         }

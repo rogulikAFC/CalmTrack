@@ -1,5 +1,6 @@
-using Surveys.Infrastructure.Persistence;
 using System.Reflection;
+using Surveys.Infrastructure.Kafka.UsersConsumer;
+using Surveys.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddPersistence();
 
 builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(Assembly.Load("Surveys.Application")));
+
+builder.Services.AddKafkaUserConsumer();
 
 var app = builder.Build();
 

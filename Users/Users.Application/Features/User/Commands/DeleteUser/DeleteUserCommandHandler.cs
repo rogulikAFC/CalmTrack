@@ -1,10 +1,12 @@
 ﻿using Application.Features.Exceptions;
 using Application.UnitOfWork;
 using MediatR;
+using Users.Application.Kafka;
 
 namespace Application.Features.User.Commands.DeleteUser
 {
-    public class DeleteUserCommandHandler(IUnitOfWork unitOfWork)
+    public class DeleteUserCommandHandler(
+        IUnitOfWork unitOfWork, IUsersProducer usersProducer)
         : IRequestHandler<DeleteUserCommand>
     {
         public async Task Handle(
@@ -20,6 +22,8 @@ namespace Application.Features.User.Commands.DeleteUser
 
             unitOfWork.UserRepository
                 .DeleteUser(user);
+
+            await usersProducer.ProduceDeleteUserMessage(user.Id);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }

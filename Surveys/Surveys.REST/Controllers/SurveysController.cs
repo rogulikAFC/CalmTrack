@@ -24,12 +24,6 @@ namespace Surveys.REST.Controllers
             _sender = sender;
         }
 
-        [HttpGet("helloworld")]
-        public async Task<ActionResult<string>> HelloWorld()
-        {
-            return await Task.FromResult("hello world 1");
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<SurveyForPreviewDto>>> ListSurveys(
             string? query, bool isArhieved = false, int pageNum = 1, int pageSize = 10)

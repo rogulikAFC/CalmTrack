@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="2.10.1" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.2.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="UserMessages" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
