@@ -14,7 +14,7 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
         }
 
         // Defining result
-        public async Task AddFormInstance(FormInstance formInstance)
+        public async Task AddFormInstanceAsync(FormInstance formInstance)
         {
             formInstance.Points = formInstance.UserAnswers
                 .Select(userAnswer => userAnswer.Answer.Value)

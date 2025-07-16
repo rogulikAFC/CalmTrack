@@ -18,6 +18,12 @@ namespace Surveys.Infrastructure.Persistence.UnitOfWork.Repositories
             _context.Add(user);
         }
 
+        public async Task<bool> DoesUserExist(Guid userId)
+        {
+            return await _context.Users
+                .AnyAsync(user => user.Id == userId);
+        }
+
         public async Task<User?> GetUserById(Guid id)
         {
             return await _context.Users

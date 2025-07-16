@@ -9,6 +9,6 @@ namespace Surveys.Application.UnitOfWork.Repositories
         Task<List<FormInstance>> ListFormInstancesOfUser(Guid userId);
 
         // Score must be counted and result must be defined in this method
-        Task AddFormInstance(FormInstance formInstance);
+        Task AddFormInstanceAsync(FormInstance formInstance);
     }
 }

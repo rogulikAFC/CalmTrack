@@ -15,12 +15,10 @@ namespace Surveys.REST.Controllers
     [ApiController]
     public class SurveysController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ISender _sender;
 
-        public SurveysController(IUnitOfWork unitOfWork, ISender sender)
+        public SurveysController(ISender sender)
         {
-            _unitOfWork = unitOfWork;
             _sender = sender;
         }
 

@@ -140,3 +140,49 @@ services:
       watch:
         - action: rebuild
           path: Surveys
+
+  # Mail
+  mail_db:
+    image: postgres:latest
+    container_name: mail_db
+    command: postgres -p 5003
+    ports:
+     - 5003:5003
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_MAIL_DB}
+      POSTGRES_PORT: 5003
+    volumes:
+      - ./.containers/surveys_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -p 5003"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mail.rest:
+    build:
+      context: Mail
+      dockerfile: Mail.REST/Dockerfile
+    ports:
+      - 8004:8080
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_MAIL_DB: ${POSTGRES_MAIL_DB}
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      SMTP_SERVER: ${SMTP_SERVER}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL}
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mail_db:
+        condition: service_healthy 
+    develop:
+      watch:
+        - action: rebuild
+          path: Mail

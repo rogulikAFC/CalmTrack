@@ -9,5 +9,7 @@ namespace Surveys.Application.UnitOfWork.Repositories
         void RemoveUser(User user);
 
         void AddUser(User user);
+
+        Task<bool> DoesUserExist(Guid userId);
     }
 }

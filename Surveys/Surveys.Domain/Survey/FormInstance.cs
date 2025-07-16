@@ -10,7 +10,7 @@
 
         public DateOnly DateOnly { get; set; }
 
-        public List<UserAnswer> UserAnswers { get; set; } = [];
+        public IEnumerable<UserAnswer> UserAnswers { get; set; } = [];
 
         public int Points { get; set; }
 

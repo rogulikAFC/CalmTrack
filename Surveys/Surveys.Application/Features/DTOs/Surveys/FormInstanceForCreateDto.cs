@@ -18,7 +18,7 @@ namespace Surveys.Application.Features.DTOs.Surveys
                 DateOnly = DateOnly
             };
 
-            formInstance.UserAnswers = (List<UserAnswer>)AnswerIds.Select(answerId =>
+            formInstance.UserAnswers = (IEnumerable<UserAnswer>)AnswerIds.Select(answerId =>
                 new UserAnswer
                 {
                     AnswerId = answerId,
