@@ -23,7 +23,7 @@ services:
     volumes:
       - ./data:/kafka
     healthcheck:
-      test: ["CMD-SHELL", "netstat -an | grep 9092 > /dev/null || exit 1"]
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list | grep -q '^user-events$'"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -145,7 +145,7 @@ services:
   mail_db:
     image: postgres:latest
     container_name: mail_db
-    command: postgres -p 5003
+    command: postgres -p 5003 # & /bin/bash -c & sleep 600
     ports:
      - 5003:5003
     environment:
@@ -154,7 +154,7 @@ services:
       POSTGRES_DB: ${POSTGRES_MAIL_DB}
       POSTGRES_PORT: 5003
     volumes:
-      - ./.containers/surveys_db:/var/lib/postgresql/data
+      - ./.containers/mail_db:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -p 5003"]
       interval: 5s
@@ -182,6 +182,8 @@ services:
         condition: service_healthy
       mail_db:
         condition: service_healthy 
+    volumes:
+      - ./Mail/Mail.Application/MailTemplates:/app/MailTemplates
     develop:
       watch:
         - action: rebuild

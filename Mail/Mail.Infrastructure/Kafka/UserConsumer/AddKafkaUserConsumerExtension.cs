@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Surveys.Infrastructure.Kafka.UsersConsumer;
+namespace Mail.Infrastructure.Kafka.UserConsumer;
 
 public static class AddKafkaUserConsumerExtension
 {

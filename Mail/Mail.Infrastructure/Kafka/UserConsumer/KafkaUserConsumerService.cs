@@ -2,7 +2,7 @@ using Confluent.Kafka;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Surveys.Infrastructure.Kafka.UsersConsumer;
+namespace Mail.Infrastructure.Kafka.UserConsumer;
 
 public class KafkaUserConsumerService : BackgroundService
 {
@@ -19,9 +19,8 @@ public class KafkaUserConsumerService : BackgroundService
         var config = new ConsumerConfig
         {
             BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_BOOTSTRAP_SERVER"),
-            GroupId = "surveys",
+            GroupId = "mail",
             AutoOffsetReset = AutoOffsetReset.Earliest,
-            ClientId = "surveys"
         };
 
         _consumer = new ConsumerBuilder<Null, string>(config)
@@ -48,6 +47,4 @@ public class KafkaUserConsumerService : BackgroundService
             }
         }
     }
-    
-    
 }
