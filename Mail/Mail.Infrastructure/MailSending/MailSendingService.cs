@@ -74,6 +74,17 @@ public class MailSendingService
         
         await _unitOfWork.SaveChangesAsync();
         
+        // Check if sending this email allowed
+        var isSendingAllowed = await _unitOfWork.BansOnSending
+            .IsSendingToUserAllowed(user, "UserCreated");
+
+        if (!isSendingAllowed)
+        {
+            _logger.LogInformation($"Sending user created email to {user.Email} is prohibited.");
+            
+            return;
+        }
+        
         // Render template
         var templateEntity = await _unitOfWork.Templates
             .GetTemplateByNameAsync("UserCreated");
@@ -107,7 +118,7 @@ public class MailSendingService
      */
     public async Task SendUserDeletedMailAsync(Guid userId)
     {
-        // Remove user
+        // Check if sending this email allowed and remove user
         var user = await _unitOfWork.Users
             .GetUserByIdAsync(userId);
 
@@ -116,9 +127,19 @@ public class MailSendingService
             throw new UserNotFound(userId);
         }
         
+        var isSendingAllowed = await _unitOfWork.BansOnSending
+            .IsSendingToUserAllowed(user, "UserDeleted");
+        
         _unitOfWork.Users.RemoveUser(user);
 
         await _unitOfWork.SaveChangesAsync();
+
+        if (!isSendingAllowed)
+        {
+            _logger.LogInformation($"Sending user deleted email to {user.Email} is prohibited.");
+            
+            return;
+        }
         
         // Render template
         var templateEntity = await _unitOfWork.Templates

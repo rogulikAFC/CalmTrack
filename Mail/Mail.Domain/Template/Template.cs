@@ -8,7 +8,7 @@ public class Template
 
     public string TemplateFileName { get; set; } = null!;
 
-    public IEnumerable<BanOnSending> BansOnSending = [];
+    public ICollection<BanOnSending> BansOnSending { get; set; } = [];
 
     public bool HasSendingToUserAllowed(User.User user)
     {

@@ -14,7 +14,7 @@ public class User
 
     public string Email { get; set; } = null!;
 
-    public IEnumerable<BanOnSending> BansOnSending = [];
+    public ICollection<BanOnSending> BansOnSending { get; set; } = [];
 
     public override string ToString() =>
         $"{FullName} ({Id})";

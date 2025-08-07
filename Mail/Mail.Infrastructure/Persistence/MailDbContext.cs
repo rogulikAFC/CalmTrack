@@ -11,7 +11,7 @@ public class MailDbContext(DbContextOptions<MailDbContext> options)
     
     public DbSet<Template> Templates { get; set; }
     
-    public DbSet<BanOnSending> BansOnSending { get; set; }
+    public DbSet<BanOnSending> BansOnSending { get; set; } 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

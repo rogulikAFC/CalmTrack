@@ -7,6 +7,8 @@ public interface IUnitOfWork
    IUserRepository Users { get; }
    
    ITemplateRepository Templates { get; }
+   
+   IBanOnSendingRepository BansOnSending { get; }
 
    Task SaveChangesAsync();
 }

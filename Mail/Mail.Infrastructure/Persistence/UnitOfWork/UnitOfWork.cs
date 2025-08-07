@@ -12,7 +12,10 @@ public class UnitOfWork(MailDbContext context)
     
     public ITemplateRepository Templates { get; }
         = new TemplateRepository(context);
-    
+
+    public IBanOnSendingRepository BansOnSending { get; }
+        = new BanOnSendingRepository(context);
+
     public async Task SaveChangesAsync()
     {
         await context.SaveChangesAsync();
